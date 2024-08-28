@@ -121,6 +121,9 @@ body {
 }
 
 @layer utilities {
+  .w-116 {
+    width: 28rem;
+  }
   .w-128 {
     width: 30rem;
   }
@@ -129,6 +132,15 @@ body {
   }
   .w-169 {
     width: 35rem;
+  }
+  .h-144 {
+    height: 32rem;
+  }
+  .h-169 {
+    height: 35rem;
+  }
+  .h-196 {
+    height: 40rem;
   }
 }
 
