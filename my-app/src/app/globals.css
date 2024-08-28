@@ -1,11 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --prim-1: #f9f9f9;
+  --prim-2: #202127;
+  --prim-3: #1e293b;
+  --prim-4: #141d2c;
+  --prim-5: #f2f2f2;
+  --prim-6: #d0d0d0;
+  --prim-7: #6cff18;
+  --prim-8: #ffda18;
+  --prim-9: #4992ff;
+  --prim-10: #ffa235;
+  --prim-11: #ff4b4b;
+  --prim-12: #522b29;
+  --prim-13: #939393;
+  --prim-14: #0ea5e9;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,13 +30,112 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: var(--background-color);
+}
+
+@layer components {
+  .bg-prim-1 {
+    background-color: var(--prim-1);
+  }
+  .bg-prim-2 {
+    background-color: var(--prim-2);
+  }
+  .bg-prim-3 {
+    background-color: var(--prim-3);
+  }
+  .bg-prim-4 {
+    background-color: var(--prim-4);
+  }
+  .bg-prim-5 {
+    background-color: var(--prim-5);
+  }
+  .bg-prim-6 {
+    background-color: var(--prim-6);
+  }
+  .bg-prim-7 {
+    background-color: var(--prim-7);
+  }
+  .bg-prim-8 {
+    background-color: var(--prim-8);
+  }
+  .bg-prim-9 {
+    background-color: var(--prim-9);
+  }
+  .bg-prim-10 {
+    background-color: var(--prim-10);
+  }
+  .bg-prim-11 {
+    background-color: var(--prim-11);
+  }
+  .bg-prim-12 {
+    background-color: var(--prim-12);
+  }
+  .bg-prim-13 {
+    background-color: var(--prim-13);
+  }
+  .bg-prim-14 {
+    background-color: var(--prim-14);
+  }
+}
+
+@layer utilities {
+  .text-prim-1 {
+    color: var(--prim-1);
+  }
+  .text-prim-2 {
+    color: var(--prim-2);
+  }
+  .text-prim-3 {
+    color: var(--prim-3);
+  }
+  .text-prim-4 {
+    color: var(--prim-4);
+  }
+  .text-prim-5 {
+    color: var(--prim-5);
+  }
+  .text-prim-6 {
+    color: var(--prim-6);
+  }
+  .text-prim-7 {
+    color: var(--prim-7);
+  }
+  .text-prim-8 {
+    color: var(--prim-8);
+  }
+  .text-prim-9 {
+    color: var(--prim-9);
+  }
+  .text-prim-10 {
+    color: var(--prim-10);
+  }
+  .text-prim-11 {
+    color: var(--prim-11);
+  }
+  .text-prim-12 {
+    color: var(--prim-12);
+  }
+  .text-prim-13 {
+    color: var(--prim-13);
+  }
+}
+
+@layer utilities {
+  .w-128 {
+    width: 30rem;
+  }
+  .w-144 {
+    width: 32rem;
+  }
+  .w-169 {
+    width: 35rem;
+  }
+}
+
+@layer utilities {
+  .leading-5-important {
+    line-height: 1.25rem !important;
+  }
 }
 
 @layer utilities {
