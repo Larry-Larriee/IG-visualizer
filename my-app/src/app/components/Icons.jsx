@@ -10,7 +10,7 @@ const icons = {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="text-prim-10 absolute left-96 h-12 w-12"
+      className="text-prim-10 h-12 w-12"
     >
       <path
         strokeLinecap="round"
@@ -24,7 +24,7 @@ const icons = {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
-      className="text-prim-9 absolute h-12 w-12"
+      className="text-prim-9 h-16 w-16"
     >
       <path
         fillRule="evenodd"
@@ -38,7 +38,7 @@ const icons = {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
-      className="text-prim-7 absolute h-12 w-12"
+      className="text-prim-7 h-12 w-12"
     >
       <path
         fillRule="evenodd"
@@ -52,7 +52,7 @@ const icons = {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
-      className="text-prim-11 absolute h-12 w-12"
+      className="text-prim-11 h-12 w-12"
     >
       <path
         fillRule="evenodd"
@@ -66,7 +66,7 @@ const icons = {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
-      className="text-prim-6 absolute h-12 w-12"
+      className="text-prim-6 h-16 w-16"
     >
       <path d="M12 9a3.75 3.75 0 1 0 0 7.5A3.75 3.75 0 0 0 12 9Z" />
       <path
@@ -81,7 +81,7 @@ const icons = {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
-      className="text-prim-12 absolute h-12 w-12"
+      className="text-prim-12 h-16 w-16"
     >
       <path
         fillRule="evenodd"
@@ -92,18 +92,23 @@ const icons = {
   ),
 };
 
-export default function Icons({ icon }) {
+export default function Icons({ icon, top, right, bottom, left }) {
   const iconRef = useRef();
 
   useEffect(() => {
     if (iconRef.current) {
-      console.log(iconRef.current);
+      if (top) iconRef.current.style.top = top;
+      if (right) iconRef.current.style.right = right;
+      if (bottom) iconRef.current.style.bottom = bottom;
+      if (left) iconRef.current.style.left = left;
     }
-  }, [iconRef]);
+  }, [iconRef, top, right, bottom, left]);
 
   return (
     <>
-      <div ref={iconRef}>{icons[icon]}</div>
+      <div className="absolute" ref={iconRef}>
+        {icons[icon]}
+      </div>
     </>
   );
 }

@@ -118,6 +118,9 @@ body {
   .text-prim-13 {
     color: var(--prim-13);
   }
+  .text-prim-14 {
+    color: var(--prim-14);
+  }
 }
 
 @layer utilities {
@@ -141,6 +144,17 @@ body {
   }
   .h-196 {
     height: 40rem;
+  }
+}
+
+@layer utilities {
+  .text-3xxl {
+    font-size: 2.1rem;
+    line-height: 2.25rem;
+  }
+  .text-7xxl {
+    font-size: 5rem;
+    line-height: 1;
   }
 }
 
