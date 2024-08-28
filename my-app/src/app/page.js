@@ -2,6 +2,7 @@ import Image from "next/image";
 import EditorUI from "./components/EditorUI";
 import Icons from "./components/Icons";
 import SpanLink from "./components/helper/SpanLink";
+import Linky from "./components/helper/Linky";
 
 export default function Home() {
   return (
@@ -20,9 +21,13 @@ export default function Home() {
           </p>
 
           <div className="flex">
-            <p className="font-league bg-prim-11 rounded-lg px-10 py-3 text-2xl font-medium text-white transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer">
-              Get Started
-            </p>
+            <Linky
+              styling={
+                "font-league bg-prim-11 rounded-lg px-10 py-3 text-2xl font-medium text-white transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer"
+              }
+              text={"Get Started"}
+              link={"/visualize"}
+            />
           </div>
         </div>
 
@@ -139,9 +144,24 @@ export default function Home() {
       </section>
 
       <footer className="mb-1 mt-20 flex w-10/12 justify-end gap-8">
-        <p className="font-league text-2xl text-gray-600">Get Started</p>
-        <p className="font-league text-2xl text-gray-600">Privacy Policy</p>
-        <p className="font-league text-2xl text-gray-600">Github</p>
+        {/* text, link, styling */}
+        <Linky
+          text={"Get Started"}
+          link={"/visualize"}
+          styling={"hover:cursor-pointer font-league text-2xl text-gray-600"}
+        />
+
+        <Linky
+          text={"Privacy Policy"}
+          link={"/privacy"}
+          styling={"hover:cursor-pointer font-league text-2xl text-gray-600"}
+        />
+
+        <Linky
+          text={"Github"}
+          link={"https://github.com/Larry-Larriee/IG-visualizer"}
+          styling={"hover:cursor-pointer font-league text-2xl text-gray-600"}
+        />
       </footer>
     </main>
   );
