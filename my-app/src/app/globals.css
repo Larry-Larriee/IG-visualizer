@@ -30,7 +30,7 @@
 }
 
 body {
-  background-color: var(--background-color);
+  background-color: var(--prim-1);
 }
 
 @layer components {

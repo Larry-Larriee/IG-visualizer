@@ -6,17 +6,10 @@ import Linky from "./components/helper/Linky";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center gap-20">
-      <nav className="mt-5 flex w-10/12 items-center justify-start gap-10">
-        <div className="bg-prim-13 h-16 w-16 rounded-lg" />
-        <p className="font-league text-prim-2 text-4xl font-bold">
-          IG Visualizer
-        </p>
-      </nav>
-
+    <>
       <section className="flex w-10/12 items-center gap-16">
         <div className="w-144 flex flex-none flex-col gap-10">
-          <p className="font-league text-prim-2 text-7xl font-semibold">
+          <p className="text-prim-2 font-league text-7xl font-semibold">
             Make your Instagram Data Easy to Read.
           </p>
 
@@ -55,35 +48,35 @@ export default function Home() {
           <p className="font-league text-lg font-semibold text-gray-500">
             [Sort By]
           </p>
-          <p className="font-league text-prim-2 text-2xl font-semibold transition duration-200 ease-in-out hover:scale-105">
+          <p className="text-prim-2 font-league text-2xl font-semibold transition duration-200 ease-in-out hover:scale-105">
             Followers
           </p>
-          <p className="font-league text-prim-2 text-2xl font-semibold transition duration-200 ease-in-out hover:scale-105">
+          <p className="text-prim-2 font-league text-2xl font-semibold transition duration-200 ease-in-out hover:scale-105">
             Logins
           </p>
-          <p className="font-league text-prim-2 text-2xl font-semibold transition duration-200 ease-in-out hover:scale-105">
+          <p className="text-prim-2 font-league text-2xl font-semibold transition duration-200 ease-in-out hover:scale-105">
             Advertisements
           </p>
-          <p className="font-league text-prim-2 text-2xl font-semibold transition duration-200 ease-in-out hover:scale-105">
+          <p className="text-prim-2 font-league text-2xl font-semibold transition duration-200 ease-in-out hover:scale-105">
             Media
           </p>
-          <p className="font-league text-prim-2 text-2xl font-semibold transition duration-200 ease-in-out hover:scale-105">
+          <p className="text-prim-2 font-league text-2xl font-semibold transition duration-200 ease-in-out hover:scale-105">
             Preferences
           </p>
-          <p className="font-league text-prim-2 text-2xl font-semibold transition duration-200 ease-in-out hover:scale-105">
+          <p className="text-prim-2 font-league text-2xl font-semibold transition duration-200 ease-in-out hover:scale-105">
             Notifications
           </p>
-          <p className="font-league text-prim-2 text-2xl font-semibold transition duration-200 ease-in-out hover:scale-105">
+          <p className="text-prim-2 font-league text-2xl font-semibold transition duration-200 ease-in-out hover:scale-105">
             and More...
           </p>
         </div>
 
         <article className="flex w-full justify-end">
           <div className="flex flex-col gap-5">
-            <p className="w-116 font-league text-prim-2 text-6xl">
+            <p className="w-116 text-prim-2 font-league text-6xl">
               Customize what you want to see
             </p>
-            <p className="w-116 font-league text-prim-2 text-3xxl">
+            <p className="w-116 text-prim-2 text-3xxl font-league">
               and filter out what you don&apos;t
             </p>
           </div>
@@ -99,10 +92,10 @@ export default function Home() {
 
       <section className="mt-36 flex w-10/12 items-center justify-between gap-16">
         <div className="w-128 flex flex-col gap-5">
-          <p className="font-league text-prim-2 text-8xl font-semibold">
+          <p className="text-prim-2 font-league text-8xl font-semibold">
             Built with Privacy in mind
           </p>
-          <p className="font-league text-prim-2 w-116 text-3xxl">
+          <p className="text-prim-2 w-116 text-3xxl font-league">
             Open Source Project. Forever. Find our Github{" "}
             <SpanLink link={"https://github.com/Larry-Larriee/IG-visualizer"} />
           </p>
@@ -126,14 +119,14 @@ export default function Home() {
 
       <section className="mt-36 flex w-10/12 items-center justify-between gap-16">
         <div className="w-169 bg-prim-5 flex h-72 items-center justify-center border-4 border-dashed border-gray-500 transition duration-200 ease-in-out hover:scale-105">
-          <p className="font-league text-prim-13 text-2xl">Upload Image Here</p>
+          <p className="text-prim-13 font-league text-2xl">Upload Image Here</p>
         </div>
 
         <div className="w-128 flex flex-col gap-5">
-          <p className="font-league text-prim-2 text-6xl font-semibold">
+          <p className="text-prim-2 font-league text-6xl font-semibold">
             As Simple as 1... 2...that&apos;s it
           </p>
-          <p className="font-league text-prim-2 text-3xl">
+          <p className="text-prim-2 font-league text-3xl">
             Upload your IG Folder and visualize your data. Read Instagram&apos;s{" "}
             <SpanLink
               link={"https://help.instagram.com/519522125107875"}
@@ -142,27 +135,6 @@ export default function Home() {
           </p>
         </div>
       </section>
-
-      <footer className="mb-1 mt-20 flex w-10/12 justify-end gap-8">
-        {/* text, link, styling */}
-        <Linky
-          text={"Get Started"}
-          link={"/visualize"}
-          styling={"hover:cursor-pointer font-league text-2xl text-gray-600"}
-        />
-
-        <Linky
-          text={"Privacy Policy"}
-          link={"/privacy"}
-          styling={"hover:cursor-pointer font-league text-2xl text-gray-600"}
-        />
-
-        <Linky
-          text={"Github"}
-          link={"https://github.com/Larry-Larriee/IG-visualizer"}
-          styling={"hover:cursor-pointer font-league text-2xl text-gray-600"}
-        />
-      </footer>
-    </main>
+    </>
   );
 }
