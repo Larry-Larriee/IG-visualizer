@@ -17,7 +17,7 @@ import IGFeedAside from "../components/visualizer-aside/IGFeedAside";
 import AdInfoAside from "../components/visualizer-aside/AdInfoAside";
 
 export default function Page() {
-  const [folder, setFolder] = useState(false);
+  const [folder, setFolder] = useState([]);
 
   const changeFolder = (acceptedFiles) => {
     setFolder(acceptedFiles);
@@ -48,8 +48,62 @@ export default function Page() {
 
   return (
     <>
-      {!folder && (
-        <Dropzone onDrop={(acceptedFiles) => changeFolder(acceptedFiles)}>
+      {folder.length === 0 && (
+        <Dropzone
+          onDrop={(acceptedFiles) => {
+            setFolder((prev) => {
+              let updatedFolder = [...prev];
+
+              acceptedFiles.forEach((file) => {
+                if (file.name.includes(".jpg") || file.name.includes(".png")) {
+                  updatedFolder.push(file);
+                } else if (file.name.includes(".json")) {
+                  const fileReader = new FileReader();
+
+                  fileReader.onload = (e) => {
+                    const file = e.target.result;
+                    const fileObject = JSON.parse(file);
+
+                    updatedFolder.push(fileObject);
+                  };
+
+                  fileReader.readAsText(file);
+                }
+              });
+
+              return updatedFolder;
+            });
+            console.log("updated folder: " + updatedFolder);
+
+            // this method uses a for loop to iterate through the acceptedFiles array and convert the .json file into a JS object if neccessary
+            // however the loop only detects one file with the .json extension even though there is more than one file with .json
+
+            //   for (let i = 0; i < acceptedFiles.length; i++) {
+            //     console.log(acceptedFiles, acceptedFiles[i]);
+
+            //     if (
+            //       acceptedFiles[i].name.includes(".jpg") ||
+            //       acceptedFiles[i].name.includes(".png")
+            //     ) {
+            //       updatedFolder.push(acceptedFiles[i]);
+            //     } else if (acceptedFiles[i].name.includes(".json")) {
+            //       const fileReader = new FileReader();
+
+            //       fileReader.onload = (e) => {
+            //         const file = e.target.result;
+            //         const fileObject = JSON.parse(file);
+
+            //         updatedFolder.push(fileObject);
+            //       };
+
+            //       fileReader.readAsText(acceptedFiles[i]);
+            //     }
+
+            //     return updatedFolder;
+            //   }
+            // });
+          }}
+        >
           {({ getRootProps, getInputProps }) => (
             <section className="flex h-full w-full items-center justify-center">
               <div
@@ -99,7 +153,7 @@ export default function Page() {
         </Dropzone>
       )}
 
-      {folder && (
+      {folder.length >= 1 && (
         <div className="flex w-10/12 gap-16">
           {/* section components */}
           {section === "Public Profile" && <PublicProfile folder={folder} />}
