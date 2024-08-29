@@ -2,18 +2,39 @@
 
 import React, { useState, useEffect } from "react";
 import SpanLink from "../components/helper/SpanLink";
+import PublicProfile from "../components/visualizer/PublicProfile";
+import Activity from "../components/visualizer/Activity";
+import LoginInfo from "../components/visualizer/LoginInfo";
+import IGFeed from "../components/visualizer/IGFeed";
+import AdInfo from "../components/visualizer/AdInfo";
+
+import PubProfAside from "../components/visualizer-aside/PubProfAside";
+import ActivityAside from "../components/visualizer-aside/ActivityAside";
+import LogInfAside from "../components/visualizer-aside/LogInfAside";
+import IGFeedAside from "../components/visualizer-aside/IGFeedAside";
+import AdInfoAside from "../components/visualizer-aside/AdInfoAside";
 
 export default function Page() {
   const [folder, setFolder] = useState(true);
+
   const [section, setSection] = useState("Public Profile");
+  const [subSection, setSubSection] = useState("Public Profile");
 
   const changeSection = (sectionButton) => {
     setSection(sectionButton);
   };
 
+  const changeSubSection = (subSectionButton) => {
+    setSubSection(subSectionButton);
+  };
+
   useEffect(() => {
     console.log(section);
   }, [section]);
+
+  useEffect(() => {
+    console.log(subSection);
+  }, [subSection]);
 
   return (
     <>
@@ -51,85 +72,49 @@ export default function Page() {
 
       {folder && (
         <div className="flex w-10/12 gap-16">
-          <section className="bg-prim-5 shadow-rough flex w-full flex-col gap-16 rounded-xl px-10 py-8">
-            <div className="flex gap-16">
-              <div className="bg-prim-9 w-116 flex h-56 items-center justify-center rounded-xl transition duration-200 ease-in-out hover:scale-105">
-                <p className="font-league text-2xl text-white">User Image</p>
-              </div>
+          {/* section components */}
+          {section === "Public Profile" && <PublicProfile />}
+          {section === "Activity" && <Activity />}
+          {section === "Login Information" && <LoginInfo />}
+          {section === "Your IG Feed" && <IGFeed />}
+          {section === "Ad Information" && <AdInfo />}
 
-              <div className="flex min-h-56 flex-col">
-                <article className="flex flex-col gap-3">
-                  <div className="flex flex-col">
-                    <p className="text-prim-2 font-league text-4xl font-bold">
-                      Larry Le
-                    </p>
-                    <div className="flex gap-5">
-                      <p className="text-prim-2 font-league text-lg">
-                        Followers: 216
-                      </p>
-                      <p className="text-prim-2 font-league text-lg">
-                        Following: 234
-                      </p>
-                    </div>
-                  </div>
-
-                  <p className="text-prim-2 font-league text-xl">
-                    Your Instagram bio, which may include hyperlinks, emojis,
-                    etc.
-                  </p>
-                </article>
-
-                <div className="flex h-full flex-col justify-end">
-                  <p className="text-prim-2 font-league text-xl">
-                    Followed by <span className="font-bold">Johnson</span> and{" "}
-                    <span className="font-bold">Dean</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* you are able to add flex-grow or flex-shrink to children of a flexbox. setting it to 1/4 rounded each div to almost 1/3, the equivalent of setting width to 1/3 and accounting for the gap-3 */}
-            <div className="flex flex-wrap gap-3">
-              <div className="bg-prim-6 h-32 w-1/4 flex-grow rounded-sm" />
-              <div className="bg-prim-6 h-32 w-1/4 flex-grow rounded-sm" />
-              <div className="bg-prim-6 h-32 w-1/4 flex-grow rounded-sm" />
-              <div className="bg-prim-6 h-32 w-1/4 flex-grow rounded-sm" />
-              <div className="bg-prim-6 h-32 w-1/4 flex-grow rounded-sm" />
-              <div className="bg-prim-6 h-32 w-1/4 flex-grow rounded-sm" />
-            </div>
-          </section>
-          <section className="bg-prim-5 shadow-rough flex w-96 flex-none flex-col gap-5 rounded-xl px-10 py-8">
-            <p
-              onClick={() => changeSection("Public Profile")}
-              className="text-prim-2 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
-            >
-              Public Profile
-            </p>
-            <p
-              onClick={() => changeSection("Activity")}
-              className="text-prim-2 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
-            >
-              Activity
-            </p>
-            <p
-              onClick={() => changeSection("Login Information")}
-              className="text-prim-2 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
-            >
-              Login Information
-            </p>
-            <p
-              onClick={() => changeSection("Your IG Feed")}
-              className="text-prim-2 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
-            >
-              Your IG Feed
-            </p>
-            <p
-              onClick={() => changeSection("Ad Information")}
-              className="text-prim-2 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
-            >
-              Ad Information
-            </p>
-          </section>
+          {/* navigation aside components */}
+          {section === "Public Profile" && (
+            <PubProfAside
+              section={section}
+              changeSection={changeSection}
+              changeSubSection={changeSubSection}
+            />
+          )}
+          {section === "Activity" && (
+            <ActivityAside
+              section={section}
+              changeSection={changeSection}
+              changeSubSection={changeSubSection}
+            />
+          )}
+          {section === "Login Information" && (
+            <LogInfAside
+              section={section}
+              changeSection={changeSection}
+              changeSubSection={changeSubSection}
+            />
+          )}
+          {section === "Your IG Feed" && (
+            <IGFeedAside
+              section={section}
+              changeSection={changeSection}
+              changeSubSection={changeSubSection}
+            />
+          )}
+          {section === "Ad Information" && (
+            <AdInfoAside
+              section={section}
+              changeSection={changeSection}
+              changeSubSection={changeSubSection}
+            />
+          )}
         </div>
       )}
     </>
