@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import SpanLink from "../components/helper/SpanLink";
 import Dropzone from "react-dropzone";
 
@@ -19,9 +19,34 @@ import AdInfoAside from "../components/visualizer-aside/AdInfoAside";
 export default function Page() {
   const [folder, setFolder] = useState([]);
 
-  const changeFolder = (acceptedFiles) => {
-    setFolder(acceptedFiles);
-  };
+  const convertedData = useMemo(() => {
+    let updatedFolder = [];
+
+    let media = [];
+    let objects = [];
+
+    folder.forEach((file) => {
+      if (file.name.includes(".jpg") || file.name.includes(".png")) {
+        media.push({ name: file.name, url: URL.createObjectURL(file) });
+      } else if (file.name.includes(".json")) {
+        const fileReader = new FileReader();
+
+        fileReader.onload = (e) => {
+          const file = e.target.result;
+          const fileObject = JSON.parse(file);
+
+          objects.push(fileObject);
+        };
+
+        fileReader.readAsText(file);
+      }
+    });
+
+    updatedFolder.push(media);
+    updatedFolder.push(objects);
+
+    return updatedFolder;
+  }, [folder]);
 
   const [section, setSection] = useState("Public Profile");
   const [subSection, setSubSection] = useState("Public Profile");
@@ -34,74 +59,16 @@ export default function Page() {
     setSubSection(subSectionButton);
   };
 
-  useEffect(() => {
-    console.log(section);
-  }, [section]);
-
-  useEffect(() => {
-    console.log(subSection);
-  }, [subSection]);
-
-  useEffect(() => {
-    console.log(folder);
-  }, [folder]);
+  // useEffect(() => {
+  //   console.log(`convertedData: ${convertedData}`);
+  // }, [convertedData]);
 
   return (
     <>
       {folder.length === 0 && (
         <Dropzone
           onDrop={(acceptedFiles) => {
-            setFolder((prev) => {
-              let updatedFolder = [...prev];
-
-              acceptedFiles.forEach((file) => {
-                if (file.name.includes(".jpg") || file.name.includes(".png")) {
-                  updatedFolder.push(file);
-                } else if (file.name.includes(".json")) {
-                  const fileReader = new FileReader();
-
-                  fileReader.onload = (e) => {
-                    const file = e.target.result;
-                    const fileObject = JSON.parse(file);
-
-                    updatedFolder.push(fileObject);
-                  };
-
-                  fileReader.readAsText(file);
-                }
-              });
-
-              return updatedFolder;
-            });
-            console.log("updated folder: " + updatedFolder);
-
-            // this method uses a for loop to iterate through the acceptedFiles array and convert the .json file into a JS object if neccessary
-            // however the loop only detects one file with the .json extension even though there is more than one file with .json
-
-            //   for (let i = 0; i < acceptedFiles.length; i++) {
-            //     console.log(acceptedFiles, acceptedFiles[i]);
-
-            //     if (
-            //       acceptedFiles[i].name.includes(".jpg") ||
-            //       acceptedFiles[i].name.includes(".png")
-            //     ) {
-            //       updatedFolder.push(acceptedFiles[i]);
-            //     } else if (acceptedFiles[i].name.includes(".json")) {
-            //       const fileReader = new FileReader();
-
-            //       fileReader.onload = (e) => {
-            //         const file = e.target.result;
-            //         const fileObject = JSON.parse(file);
-
-            //         updatedFolder.push(fileObject);
-            //       };
-
-            //       fileReader.readAsText(acceptedFiles[i]);
-            //     }
-
-            //     return updatedFolder;
-            //   }
-            // });
+            setFolder(acceptedFiles);
           }}
         >
           {({ getRootProps, getInputProps }) => (
@@ -153,14 +120,22 @@ export default function Page() {
         </Dropzone>
       )}
 
-      {folder.length >= 1 && (
+      {convertedData.length > 1 && (
         <div className="flex w-10/12 gap-16">
           {/* section components */}
-          {section === "Public Profile" && <PublicProfile folder={folder} />}
-          {section === "Activity" && <Activity folder={folder} />}
-          {section === "Login Information" && <LoginInfo folder={folder} />}
-          {section === "Your IG Feed" && <IGFeed folder={folder} />}
-          {section === "Ad Information" && <AdInfo folder={folder} />}
+          {section === "Public Profile" && (
+            <PublicProfile convertedData={convertedData} />
+          )}
+          {section === "Activity" && <Activity convertedData={convertedData} />}
+          {section === "Login Information" && (
+            <LoginInfo convertedData={convertedData} />
+          )}
+          {section === "Your IG Feed" && (
+            <IGFeed convertedData={convertedData} />
+          )}
+          {section === "Ad Information" && (
+            <AdInfo convertedData={convertedData} />
+          )}
 
           {/* navigation aside components */}
           {section === "Public Profile" && (

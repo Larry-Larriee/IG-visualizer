@@ -1,12 +1,37 @@
-import React from "react";
+"use client";
 
-export default function PublicProfile({ folder }) {
+import React, { useMemo } from "react";
+import Image from "next/image";
+
+export default function PublicProfile({ convertedData }) {
+  const profilePicture = useMemo(() => {
+    console.log(convertedData);
+
+    console.log("obtained JS objects file", convertedData[1]);
+
+    convertedData[1].forEach((object) => {
+      console.log("working");
+
+      // if (file["ig_profile_picture"]) {
+      //   return URL.createObjectURL(file["ig_profile_picture"][0]);
+      // }
+    });
+  }, [convertedData]);
+
   return (
     <>
       <section className="bg-prim-5 shadow-rough min-h-182 flex w-full flex-col gap-16 rounded-xl px-10 py-8">
         <div className="flex gap-16">
           <div className="bg-prim-9 w-116 flex h-56 items-center justify-center rounded-xl transition duration-200 ease-in-out hover:scale-105">
-            <p className="font-league text-2xl text-white">User Image</p>
+            {profilePicture && (
+              <Image
+                src={profilePicture}
+                alt="User Image"
+                width={500}
+                height={500}
+                className="h-full w-full"
+              />
+            )}
           </div>
 
           <div className="flex min-h-56 flex-col">
