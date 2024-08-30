@@ -18,35 +18,41 @@ import AdInfoAside from "../components/visualizer-aside/AdInfoAside";
 
 export default function Page() {
   const [folder, setFolder] = useState([]);
+  const [convertedFileObjects, setConvertedFileObjects] = useState([]);
 
-  const convertedData = useMemo(() => {
-    let updatedFolder = [];
-
-    let media = [];
-    let objects = [];
-
+  useEffect(() => {
     folder.forEach((file) => {
-      if (file.name.includes(".jpg") || file.name.includes(".png")) {
-        media.push({ name: file.name, url: URL.createObjectURL(file) });
-      } else if (file.name.includes(".json")) {
+      if (file.name.includes(".json")) {
         const fileReader = new FileReader();
 
         fileReader.onload = (e) => {
           const file = e.target.result;
           const fileObject = JSON.parse(file);
 
-          objects.push(fileObject);
+          setConvertedFileObjects((prev) => [...prev, fileObject]);
         };
 
         fileReader.readAsText(file);
       }
     });
+  }, [folder]);
+
+  const convertedData = useMemo(() => {
+    let updatedFolder = [];
+
+    let media = [];
+
+    folder.forEach((file) => {
+      if (file.name.includes(".jpg") || file.name.includes(".png")) {
+        media.push({ name: file.name, url: URL.createObjectURL(file) });
+      }
+    });
 
     updatedFolder.push(media);
-    updatedFolder.push(objects);
+    updatedFolder.push(convertedFileObjects);
 
     return updatedFolder;
-  }, [folder]);
+  }, [folder, convertedFileObjects]);
 
   const [section, setSection] = useState("Public Profile");
   const [subSection, setSubSection] = useState("Public Profile");
@@ -58,10 +64,6 @@ export default function Page() {
   const changeSubSection = (subSectionButton) => {
     setSubSection(subSectionButton);
   };
-
-  // useEffect(() => {
-  //   console.log(`convertedData: ${convertedData}`);
-  // }, [convertedData]);
 
   return (
     <>
@@ -120,7 +122,7 @@ export default function Page() {
         </Dropzone>
       )}
 
-      {convertedData[0].length !== 0 && (
+      {convertedData[1].length !== 0 && (
         <div className="flex w-10/12 gap-16">
           {/* section components */}
           {section === "Public Profile" && (

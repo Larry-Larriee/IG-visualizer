@@ -4,53 +4,66 @@ import React, { useEffect, useMemo } from "react";
 import Image from "next/image";
 
 export default function PublicProfile({ images, objects }) {
-  // const profilePicture = useMemo(() => {
-  //   console.log("obtained JS objects file", convertedData);
+  const pictureParse = useMemo(() => {
+    let picture;
+    let result;
 
-  //   convertedData[1].forEach((object) => {
-  //     console.log("object", object["organic_insights_live"]);
-  //   });
+    objects.forEach((object) => {
+      if (object["ig_profile_picture"]) {
+        picture = object["ig_profile_picture"];
 
-  //   console.log("hi");
+        result = picture[0]["uri"].split("/");
+      }
+    });
 
-  //   // for (let i = 0; i < convertedData[1].length; i++) {
-  //   //   console.log(convertedData[1][i]);
+    return result;
+  }, [objects]);
 
-  //   //   if (convertedData[1][i]["ig_profile_picture"]) {
-  //   //     return convertedData[1][i]["ig_profile_picture"];
-  //   //   }
-  //   // }
+  const profilePicture = useMemo(() => {
+    let result;
 
-  //   return "no image found";
-  // }, [convertedData]);
+    // we need to add pictureParse because images is a dependency and at that moment, pictureParse may not be defined yet
+    if (pictureParse) {
+      images.forEach((image) => {
+        if (image["name"].includes(pictureParse[3])) {
+          result = image["url"];
+        }
+      });
+    }
 
-  // useEffect(() => {
-  //   console.log("profilePicture", profilePicture);
-  // }, [profilePicture]);
+    return result;
+  }, [images, pictureParse]);
 
-  // const username = useMemo(() => {
-  //   console.log(objects, objects.length, typeof objects);
-  //   console.log(images, images.length, typeof images);
+  const username = useMemo(() => {
+    let user;
 
-  //   if (objects.length !== 0) {
-  //     console.log("hedllo");
+    if (objects.length !== 0) {
+      objects.forEach((object) => {
+        if (object["profile_user"]) {
+          user = object["profile_user"][0]["string_map_data"]["Name"]["value"];
+        }
+      });
 
-  //     objects.forEach((object) => {
-  //       if (object["profile_user"]) {
-  //         return object["profile_user"][0]["string_map_data"]["Name"]["value"];
-  //       }
-  //     });
-  //   }
+      return user;
+    }
+  }, [objects]);
 
-  //   return "no username found";
-  // }, [objects, images]);
+  const bio = useMemo(() => {
+    let result;
+
+    if (objects.length !== 0) {
+      objects.forEach((object) => {
+        if (object["profile_user"]) {
+          result = object["profile_user"][0]["string_map_data"]["Bio"]["value"];
+        }
+      });
+
+      return result;
+    }
+  }, [objects]);
 
   useEffect(() => {
-    console.log("objects", objects);
-    console.log("objects", objects[0]);
-    objects.forEach((object) => {
-      console.log(object);
-    });
+    console.log(objects);
   }, [objects]);
 
   return (
@@ -58,7 +71,7 @@ export default function PublicProfile({ images, objects }) {
       <section className="bg-prim-5 shadow-rough min-h-182 flex w-full flex-col gap-16 rounded-xl px-10 py-8">
         <div className="flex gap-16">
           <div className="bg-prim-9 w-116 flex h-56 items-center justify-center rounded-xl transition duration-200 ease-in-out hover:scale-105">
-            {/* {profilePicture && (
+            {profilePicture && (
               <Image
                 src={profilePicture}
                 alt="User Image"
@@ -66,14 +79,14 @@ export default function PublicProfile({ images, objects }) {
                 height={500}
                 className="h-full w-full"
               />
-            )} */}
+            )}
           </div>
 
           <div className="flex min-h-56 flex-col">
             <article className="flex flex-col gap-3">
               <div className="flex flex-col">
                 <p className="text-prim-2 font-league text-4xl font-bold">
-                  {/* {username} */}
+                  {username}
                 </p>
                 <div className="flex gap-5">
                   <p className="text-prim-2 font-league text-lg">
@@ -85,9 +98,7 @@ export default function PublicProfile({ images, objects }) {
                 </div>
               </div>
 
-              <p className="text-prim-2 font-league text-xl">
-                Your Instagram bio, which may include hyperlinks, emojis, etc.
-              </p>
+              <p className="text-prim-2 font-league text-xl">{bio}</p>
             </article>
 
             <div className="flex h-full flex-col justify-end">
