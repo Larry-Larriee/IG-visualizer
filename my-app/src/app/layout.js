@@ -1,7 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Linky from "./components/helper/Linky";
-import Link from "next/link";
+import Image from "next/image";
+import logo from "../../src/app/assets/logo.webp";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,14 @@ export default function RootLayout({ children }) {
         }
       >
         <nav className="mt-5 flex w-10/12 items-center justify-start gap-10">
-          <div className="bg-prim-13 h-16 w-16 rounded-lg" />
+          <Image
+            width={500}
+            height={500}
+            alt={"logo"}
+            src={logo}
+            className="h-16 w-16 rounded-lg"
+          />
+
           <Linky
             text={"IG Visualizer"}
             link={"/"}
