@@ -120,11 +120,14 @@ export default function Page() {
         </Dropzone>
       )}
 
-      {convertedData.length > 1 && (
+      {convertedData && (
         <div className="flex w-10/12 gap-16">
           {/* section components */}
           {section === "Public Profile" && (
-            <PublicProfile convertedData={convertedData} />
+            <PublicProfile
+              images={convertedData[0]}
+              objects={convertedData[1]}
+            />
           )}
           {section === "Activity" && <Activity convertedData={convertedData} />}
           {section === "Login Information" && (
