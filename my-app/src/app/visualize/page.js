@@ -120,7 +120,7 @@ export default function Page() {
         </Dropzone>
       )}
 
-      {convertedData && (
+      {convertedData[0].length !== 0 && (
         <div className="flex w-10/12 gap-16">
           {/* section components */}
           {section === "Public Profile" && (
@@ -129,15 +129,33 @@ export default function Page() {
               objects={convertedData[1]}
             />
           )}
-          {section === "Activity" && <Activity convertedData={convertedData} />}
+          {section === "Activity" && (
+            <Activity
+              convertedData={convertedData}
+              changeSubSection={changeSubSection}
+              subsection={subSection}
+            />
+          )}
           {section === "Login Information" && (
-            <LoginInfo convertedData={convertedData} />
+            <LoginInfo
+              convertedData={convertedData}
+              changeSubSection={changeSubSection}
+              subsection={subSection}
+            />
           )}
           {section === "Your IG Feed" && (
-            <IGFeed convertedData={convertedData} />
+            <IGFeed
+              convertedData={convertedData}
+              changeSubSection={changeSubSection}
+              subsection={subSection}
+            />
           )}
           {section === "Ad Information" && (
-            <AdInfo convertedData={convertedData} />
+            <AdInfo
+              convertedData={convertedData}
+              changeSubSection={changeSubSection}
+              subsection={subSection}
+            />
           )}
 
           {/* navigation aside components */}

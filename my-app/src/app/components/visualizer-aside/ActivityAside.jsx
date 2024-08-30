@@ -34,37 +34,37 @@ export default function ActivitySide({ changeSection, changeSubSection }) {
         Posts
       </p>
       <p
-        onClick={() => changeSection("Stories")}
+        onClick={() => changeSubSection("Stories")}
         className="text-prim-6 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
       >
         Stories
       </p>
       <p
-        onClick={() => changeSection("Direct Message")}
+        onClick={() => changeSubSection("Direct Messages")}
         className="text-prim-6 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
       >
-        Direct Message
+        Direct Messages
       </p>
       <p
-        onClick={() => changeSection("Comments")}
+        onClick={() => changeSubSection("Comments")}
         className="text-prim-6 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
       >
         Comments
       </p>
       <p
-        onClick={() => changeSection("Likes")}
+        onClick={() => changeSubSection("Likes")}
         className="text-prim-6 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
       >
         Likes
       </p>
       <p
-        onClick={() => changeSection("Story Interactions")}
+        onClick={() => changeSubSection("Story Interactions")}
         className="text-prim-6 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
       >
         Story Interactions
       </p>
       <p
-        onClick={() => changeSection("Saved")}
+        onClick={() => changeSubSection("Saved")}
         className="text-prim-6 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
       >
         Saved
