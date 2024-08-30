@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo } from "react";
 import Image from "next/image";
+import { split } from "postcss/lib/list";
 
 export default function PublicProfile({ images, objects }) {
   const pictureParse = useMemo(() => {
@@ -74,7 +75,6 @@ export default function PublicProfile({ images, objects }) {
             if (
               object[0]["string_list_data"][0]["href"].includes("instagram.com")
             ) {
-              console.log("followers list", object);
               result = object;
             }
           }
@@ -137,15 +137,34 @@ export default function PublicProfile({ images, objects }) {
         }
       });
 
-      console.log(postURIs);
+      // postURIs is an array images
+      let splitPostURIs = postURIs.map((uri) => {
+        return uri.split("/");
+      });
+
+      if (images) {
+        images.forEach((image) => {
+          for (let i = 0; i < splitPostURIs.length; i++) {
+            // some posts also have an "other" directory, meaning i have to search through both splitPostURIs[i][2] and splitPostURIs[i][3]
+            if (image["name"].includes(splitPostURIs[i][2])) {
+              result.push(image["url"]);
+              break;
+            }
+            if (image["name"].includes(splitPostURIs[i][3])) {
+              result.push(image["url"]);
+              break;
+            }
+          }
+        });
+      }
     }
 
-    return postURIs;
-  }, [postsList]);
+    return result;
+  }, [images, postsList]);
 
-  useEffect(() => {
-    console.log(objects);
-  }, [objects]);
+  // useEffect(() => {
+  //   console.log(images);
+  // }, [images]);
 
   return (
     <>
@@ -208,37 +227,24 @@ export default function PublicProfile({ images, objects }) {
         </div>
 
         {/* you are able to add flex-grow or flex-shrink to children of a flexbox. setting it to 1/4 rounded each div to almost 1/3, the equivalent of setting width to 1/3 and accounting for the gap-3 */}
-        <div className="flex flex-wrap gap-3">
-          <div className="bg-prim-6 h-32 w-1/4 flex-grow rounded-sm">
-            <p className="text-prim-2 font-league text-xl">
-              {postsList && postsList[0]["title"]}
-            </p>
-          </div>
-          <div className="bg-prim-6 h-32 w-1/4 flex-grow rounded-sm">
-            <p className="text-prim-2 font-league text-xl">
-              {postsList && postsList[1]["title"]}
-            </p>
-          </div>
-          <div className="bg-prim-6 h-32 w-1/4 flex-grow rounded-sm">
-            <p className="text-prim-2 font-league text-xl">
-              {postsList && postsList[2]["title"]}
-            </p>
-          </div>
-          <div className="bg-prim-6 h-32 w-1/4 flex-grow rounded-sm">
-            <p className="text-prim-2 font-league text-xl">
-              {postsList && postsList[3]["title"]}
-            </p>
-          </div>
-          <div className="bg-prim-6 h-32 w-1/4 flex-grow rounded-sm">
-            <p className="text-prim-2 font-league text-xl">
-              {postsList && postsList[4]["title"]}
-            </p>
-          </div>
-          <div className="bg-prim-6 h-32 w-1/4 flex-grow rounded-sm">
-            <p className="text-prim-2 font-league text-xl">
-              {postsList && postsList[5]["title"]}
-            </p>
-          </div>
+        <div className="flex flex-wrap gap-1">
+          {postImages &&
+            postImages.map((image, index) => {
+              return (
+                <div
+                  key={index}
+                  className="bg-prim-6 h-32 w-1/4 flex-grow rounded-sm"
+                >
+                  <Image
+                    src={image}
+                    alt="Post Image"
+                    width={500}
+                    height={500}
+                    className="h-full w-full rounded-sm"
+                  />
+                </div>
+              );
+            })}
         </div>
       </section>
     </>

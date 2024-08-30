@@ -133,28 +133,32 @@ export default function Page() {
           )}
           {section === "Activity" && (
             <Activity
-              convertedData={convertedData}
+              images={convertedData[0]}
+              objects={convertedData[1]}
               changeSubSection={changeSubSection}
               subsection={subSection}
             />
           )}
           {section === "Login Information" && (
             <LoginInfo
-              convertedData={convertedData}
+              images={convertedData[0]}
+              objects={convertedData[1]}
               changeSubSection={changeSubSection}
               subsection={subSection}
             />
           )}
           {section === "Your IG Feed" && (
             <IGFeed
-              convertedData={convertedData}
+              images={convertedData[0]}
+              objects={convertedData[1]}
               changeSubSection={changeSubSection}
               subsection={subSection}
             />
           )}
           {section === "Ad Information" && (
             <AdInfo
-              convertedData={convertedData}
+              images={convertedData[0]}
+              objects={convertedData[1]}
               changeSubSection={changeSubSection}
               subsection={subSection}
             />
