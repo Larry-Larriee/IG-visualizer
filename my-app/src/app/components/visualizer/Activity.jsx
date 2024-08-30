@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Speech from "../Speech";
 import Comment from "../Comment";
+import Image from "next/image";
 
 // import Image from "next/image";
 
 export default function Activity({
-  convertedData,
+  images,
+  objects,
   changeSubSection,
   subsection,
 }) {
@@ -16,53 +18,128 @@ export default function Activity({
     changeSubSection("Direct Messages");
   }, []);
 
+  useEffect(() => {
+    console.log(objects);
+  }, [objects]);
+
+  const storiesMedia = useMemo(() => {
+    let storiesList;
+    let result = [];
+
+    if (objects) {
+      objects.forEach((object) => {
+        if (object["ig_stories"]) {
+          storiesList = object["ig_stories"];
+        }
+      });
+
+      let splitStoriesList = storiesList.map((story) => {
+        return story["uri"].split("/");
+      });
+
+      images.forEach((image) => {
+        for (let i = 0; i < splitStoriesList.length; i++) {
+          if (image["name"].includes(splitStoriesList[i][3])) {
+            result.push(image["url"]);
+            break;
+          }
+        }
+      });
+
+      return result;
+    }
+  }, [images, objects]);
+
+  // direct messages are the messages of all the users. it is an array of objects with the title of the user and the messages
+  const directMessages = useMemo(() => {
+    let result = [];
+
+    if (objects) {
+      objects.forEach((object) => {
+        // if the object has the title (key), it signifies that it is a direct message
+        if (object["title"]) {
+          result.push(object);
+        }
+      });
+
+      return result;
+    }
+  }, [objects]);
+
+  // DMUsers is specifically an array of users that the user has had direct messages with
+  const DMUsers = useMemo(() => {
+    let result = [];
+
+    if (directMessages) {
+      directMessages.forEach((object) => {
+        result.push(object["title"]);
+      });
+
+      return result;
+    }
+  }, [directMessages]);
+
+  const [user, setUser] = useState("");
+
+  const changeDMUser = (user) => {
+    setUser(user);
+  };
+
+  // userMessages will change if the user clicks on a different person. it is the entire conversation between the user and the selected user
+  // (maybe) bug where userMessages returns an array, although the array does have the correct object
+  const userMessages = useMemo(() => {
+    let result;
+
+    if (user && directMessages) {
+      directMessages.forEach((message) => {
+        console.log(message["title"], user);
+
+        if (message["title"] === user) {
+          result = message["messages"];
+        }
+      });
+
+      console.log(result);
+
+      return result;
+    }
+  }, [user, directMessages]);
+
+  // on mount, set the default user state to the first user in the DMUsers array
+  useEffect(() => {
+    if (DMUsers) {
+      changeDMUser(DMUsers[0]);
+    }
+  }, [DMUsers]);
+
+  useEffect(() => {
+    console.log(userMessages);
+  }, [userMessages]);
+
   return (
     <section className="bg-prim-5 shadow-rough min-h-182 flex w-full flex-col gap-5 rounded-xl px-10 py-8">
-      {subsection === "Posts" && (
-        <>
-          <p className="text-prim-2 font-league text-3xl">Posts</p>
-
-          <div className="flex h-full w-full flex-wrap gap-2">
-            <div className="bg-prim-6 w-1/4 flex-grow rounded-sm transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer" />
-            <div className="bg-prim-6 w-1/4 flex-grow rounded-sm transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer" />
-            <div className="bg-prim-6 w-1/4 flex-grow rounded-sm transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer" />
-            <div className="bg-prim-6 w-1/4 flex-grow rounded-sm transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer" />
-            <div className="bg-prim-6 w-1/4 flex-grow rounded-sm transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer" />
-            <div className="bg-prim-6 w-1/4 flex-grow rounded-sm transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer" />
-            <div className="bg-prim-6 w-1/4 flex-grow rounded-sm transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer" />
-          </div>
-        </>
-      )}
-
       {subsection === "Stories" && (
         <>
           <p className="text-prim-2 font-league text-3xl">Stories</p>
 
           <div className="flex h-full w-full flex-wrap gap-2">
-            <div className="bg-prim-6 relative h-72 w-1/4 flex-grow rounded-sm transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer">
-              <section className="absolute left-1/2 top-10 flex -translate-x-1/2">
-                <p className="w-48 rounded-xl bg-gray-400 px-2 py-2 font-league text-base font-bold text-white">
-                  She looks so cool @jess
-                </p>
-              </section>
-            </div>
-            <div className="bg-prim-6 h-48 w-1/4 flex-grow rounded-sm transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer" />
-            <div className="bg-prim-6 relative h-72 w-1/4 flex-grow rounded-sm transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer">
-              <section className="absolute bottom-10 left-1/2 flex -translate-x-1/2">
-                <p className="w-48 rounded-xl bg-black px-2 py-2 font-league text-base font-bold text-white">
-                  @fortnite W clip 😎
-                </p>
-              </section>
-            </div>
-            <div className="bg-prim-6 h-48 w-1/4 flex-grow rounded-sm transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer" />
-            <div className="bg-prim-6 h-64 w-1/4 flex-grow rounded-sm transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer" />
-            <div className="bg-prim-6 relative h-56 w-1/4 flex-grow rounded-sm transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer">
-              <section className="absolute bottom-10 left-1/2 flex -translate-x-1/2">
-                <p className="bg-prim-9 w-40 rounded-xl px-2 py-2 font-league text-base font-bold text-white">
-                  @look at this dude! what a silly goose
-                </p>
-              </section>
-            </div>
+            {storiesMedia &&
+              storiesMedia.map((image, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="bg-prim-6 h-96 w-1/4 flex-grow rounded-sm transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer"
+                  >
+                    <Image
+                      src={image}
+                      alt="Post Image"
+                      width={500}
+                      height={500}
+                      className="h-full w-full rounded-sm"
+                    />
+                  </div>
+                );
+              })}
           </div>
         </>
       )}
@@ -73,42 +150,45 @@ export default function Activity({
 
           <div className="flex h-full w-full gap-10">
             <section className="flex h-full w-64 flex-none flex-col gap-4 rounded-lg bg-gray-200 p-5">
-              <p className="text-prim-2 hover:text-prim-9 font-league text-xl transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer">
-                Group Chat
-              </p>
-              <p className="text-prim-2 hover:text-prim-9 font-league text-xl transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer">
-                Group Chat
-              </p>
-              <p className="text-prim-2 hover:text-prim-9 font-league text-xl transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer">
-                Group Chat
-              </p>
-              <p className="text-prim-2 hover:text-prim-9 font-league text-xl transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer">
-                Friend
-              </p>
-              <p className="text-prim-2 hover:text-prim-9 font-league text-xl transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer">
-                Friend
-              </p>
-              <p className="text-prim-2 hover:text-prim-9 font-league text-xl transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer">
-                Friend
-              </p>
+              {DMUsers &&
+                DMUsers.map((user, index) => {
+                  return (
+                    <p
+                      key={user + index}
+                      className="text-prim-2 hover:text-prim-9 font-league text-xl transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer"
+                      onClick={() => changeDMUser(user)}
+                    >
+                      {user}
+                    </p>
+                  );
+                })}
             </section>
 
             <section className="flex w-full flex-col gap-9">
-              <Speech
-                orientation={"left"}
-                text={"WHY WAS THAT TEST SO HARD?"}
-              />
-              <Speech
-                orientation={"right"}
-                text={"It's cuz you didn't do the hw"}
-              />
-              <Speech
-                orientation={"left"}
-                text={
-                  "This is the only time the test actually had questions from the homework"
-                }
-              />
-              <Speech orientation={"right"} text={"💀"} />
+              {userMessages &&
+                userMessages.map((message, index) => {
+                  // if the message text is present, render the message
+                  if (message["content"] && message["sender_name"] === user) {
+                    return (
+                      <Speech
+                        key={message + index}
+                        orientation={"left"}
+                        text={message["content"]}
+                      />
+                    );
+                  }
+
+                  // if the sender_name is not equal to the user, then it is you
+                  if (message["content"] && message["sender_name"] !== user) {
+                    return (
+                      <Speech
+                        key={message + index}
+                        orientation={"right"}
+                        text={message["content"]}
+                      />
+                    );
+                  }
+                })}
             </section>
           </div>
         </>

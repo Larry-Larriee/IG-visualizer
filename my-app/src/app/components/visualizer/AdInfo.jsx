@@ -1,7 +1,8 @@
 import React from "react";
 
 export default function AdInfo({
-  convertedData,
+  images,
+  objects,
   changeSubSection,
   subsection,
 }) {

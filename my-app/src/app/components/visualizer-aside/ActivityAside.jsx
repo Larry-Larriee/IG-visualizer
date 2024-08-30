@@ -27,12 +27,7 @@ export default function ActivitySide({ changeSection, changeSubSection }) {
           />
         </svg>
       </div>
-      <p
-        onClick={() => changeSubSection("Posts")}
-        className="text-prim-6 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
-      >
-        Posts
-      </p>
+
       <p
         onClick={() => changeSubSection("Stories")}
         className="text-prim-6 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
@@ -62,12 +57,6 @@ export default function ActivitySide({ changeSection, changeSubSection }) {
         className="text-prim-6 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
       >
         Story Interactions
-      </p>
-      <p
-        onClick={() => changeSubSection("Saved")}
-        className="text-prim-6 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
-      >
-        Saved
       </p>
     </section>
   );

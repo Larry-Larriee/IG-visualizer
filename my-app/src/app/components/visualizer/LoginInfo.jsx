@@ -1,7 +1,8 @@
 import React from "react";
 
 export default function LoginInfo({
-  convertedData,
+  images,
+  objects,
   changeSubSection,
   subsection,
 }) {
