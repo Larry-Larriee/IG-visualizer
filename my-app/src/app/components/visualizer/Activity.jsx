@@ -99,9 +99,14 @@ export default function Activity({
         }
       });
 
-      console.log(result);
+      // reversing array so messages are oldest to newest instead of newest to oldest
+      let reversedResult = [];
 
-      return result;
+      for (let i = result.length - 1; i >= 0; i -= 1) {
+        reversedResult.push(result[i]);
+      }
+
+      return reversedResult;
     }
   }, [user, directMessages]);
 
@@ -113,8 +118,41 @@ export default function Activity({
   }, [DMUsers]);
 
   useEffect(() => {
-    console.log(userMessages);
-  }, [userMessages]);
+    console.log(objects);
+  }, [objects]);
+
+  const commentsList = useMemo(() => {
+    let result = [];
+
+    if (objects) {
+      objects.forEach((object) => {
+        if (Array.isArray(object)) {
+          // check if the specific array is an array of comments and data about the comments
+          if (object[0]["string_map_data"]) {
+            for (let i = 0; i < object.length; i += 1) {
+              result.push(object[i]["string_map_data"]);
+            }
+          }
+        }
+      });
+
+      return result;
+    }
+  }, [objects]);
+
+  // const mostComments = useMemo(() => {
+  //   let result = {};
+
+  //   if (commentsList) {
+  //     for (let comment in commentsList) {
+  //       result[comment
+  //     }
+  //   }
+  // }, [commentsList]);
+
+  useEffect(() => {
+    console.log(commentsList);
+  }, [commentsList]);
 
   return (
     <section className="bg-prim-5 shadow-rough min-h-182 flex w-full flex-col gap-5 rounded-xl px-10 py-8">
@@ -174,6 +212,7 @@ export default function Activity({
                         key={message + index}
                         orientation={"left"}
                         text={message["content"]}
+                        date={message["timestamp_ms"]}
                       />
                     );
                   }
@@ -185,6 +224,7 @@ export default function Activity({
                         key={message + index}
                         orientation={"right"}
                         text={message["content"]}
+                        date={message["timestamp_ms"]}
                       />
                     );
                   }
@@ -202,7 +242,8 @@ export default function Activity({
             <section className="flex h-48 w-full flex-col gap-1 rounded-lg bg-gray-200 p-4">
               <p className="text-prim-2 font-league text-2xl">Statistics:</p>
               <p className="text-prim-2 font-league text-lg transition duration-200 ease-in-out hover:scale-105">
-                You&apos;ve typed 2399 comments in your IG career{" "}
+                You&apos;ve typed {commentsList && commentsList.length} comments
+                in your IG career{" "}
               </p>
               <p className="text-prim-2 font-league text-lg transition duration-200 ease-in-out hover:scale-105">
                 You&apos;ve sent the most comments to{" "}
@@ -215,31 +256,23 @@ export default function Activity({
             </section>
 
             <div className="flex flex-col gap-5">
-              <Comment
+              {commentsList &&
+                commentsList.map((comment, index) => {
+                  return (
+                    <Comment
+                      key={comment + index}
+                      comment={`You replied to Larry ${comment["Comment"]["value"]}`}
+                      date={comment["Time"]["timestamp"]}
+                      atHandle={`Larry`}
+                    />
+                  );
+                })}
+
+              {/* <Comment
                 comment={"You replied to @kani: That makes me hungry"}
                 date={"September 3rd, 2024"}
                 atHandle={"@kani"}
-              />
-
-              <Comment
-                comment={"You replied to @rachel: WOO I LOVE BIRDS"}
-                date={"September 13rd, 2024"}
-                atHandle={"@rachel"}
-              />
-
-              <Comment
-                comment={
-                  "You replied to @mike: have fun in college. wish me luck in application szn!!"
-                }
-                date={"September 14th, 2024"}
-                atHandle={"@mike"}
-              />
-
-              <Comment
-                comment={"You replied to @kani: what the dog doin"}
-                date={"September 29th, 2024"}
-                atHandle={"@kani"}
-              />
+              /> */}
             </div>
           </div>
         </>

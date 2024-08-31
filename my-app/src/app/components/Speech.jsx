@@ -5,6 +5,8 @@ export default function Speech({
   date,
   orientation,
 }) {
+  const convertedDate = new Date(date);
+
   return (
     <>
       {orientation === "left" && (
@@ -32,7 +34,7 @@ export default function Speech({
               </div>
 
               <p className="text-prim-13 font-league text-sm">
-                September 12th, 5:32 PM
+                {convertedDate && convertedDate.toDateString()}
               </p>
             </article>
           </div>
@@ -64,7 +66,7 @@ export default function Speech({
               </div>
 
               <p className="text-prim-13 font-league text-sm">
-                September 12th, 5:32 PM
+                {convertedDate && convertedDate.toDateString()}
               </p>
             </article>
           </div>
