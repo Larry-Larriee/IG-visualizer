@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo } from "react";
+import Logs from "../Logs";
 
 export default function LoginInfo({
   images,
@@ -10,7 +11,7 @@ export default function LoginInfo({
 }) {
   // on mount, change the subsection to "Login," which is the default subsection for the "Login Information" section
   useEffect(() => {
-    changeSubSection("Direct Messages");
+    changeSubSection("Logged In");
   }, []);
 
   const logins = useMemo(() => {
@@ -23,7 +24,13 @@ export default function LoginInfo({
         }
       });
     }
-    return result;
+
+    let reversedResult = [];
+    for (let i = result.length - 1; i >= 0; i -= 1) {
+      reversedResult.push(result[i]);
+    }
+
+    return reversedResult;
   }, [objects]);
 
   const logouts = useMemo(() => {
@@ -36,24 +43,42 @@ export default function LoginInfo({
         }
       });
     }
-    return result;
+
+    let reversedResult = [];
+    for (let i = result.length - 1; i >= 0; i -= 1) {
+      reversedResult.push(result[i]);
+    }
+
+    return reversedResult;
   }, [objects]);
-
-  useEffect(() => {
-    console.log("logins", logins);
-  }, [logins]);
-
-  useEffect(() => {
-    console.log("logouts", logouts);
-  }, [logouts]);
 
   return (
     <section className="bg-prim-5 shadow-rough min-h-182 flex w-full flex-col gap-16 rounded-xl px-10 py-8">
       <p className="text-prim-2 font-league text-3xl">Login Information</p>
-
-      {subsection === "Logged In" && <></>}
-
-      {subsection === "Logged Out" && <></>}
+      {subsection === "Logged In" &&
+        logins &&
+        logins.map((login, index) => {
+          return (
+            <Logs
+              key={login["title"] + index}
+              time={login["title"]}
+              address={login["string_map_data"]["IP Address"]["value"]}
+              device={login["string_map_data"]["User Agent"]["value"]}
+            />
+          );
+        })}
+      {subsection === "Logged Out" &&
+        logouts &&
+        logouts.map((login, index) => {
+          return (
+            <Logs
+              key={login["title"] + index}
+              time={login["title"]}
+              address={login["string_map_data"]["IP Address"]["value"]}
+              device={login["string_map_data"]["User Agent"]["value"]}
+            />
+          );
+        })}{" "}
     </section>
   );
 }

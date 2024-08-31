@@ -18,10 +18,6 @@ export default function Activity({
     changeSubSection("Direct Messages");
   }, []);
 
-  useEffect(() => {
-    console.log(objects);
-  }, [objects]);
-
   const storiesMedia = useMemo(() => {
     let storiesList;
     let result = [];
@@ -253,10 +249,6 @@ export default function Activity({
       return result;
     }
   }, [objects]);
-
-  useEffect(() => {
-    console.log(storyInteractionsList);
-  }, [storyInteractionsList]);
 
   return (
     <section className="bg-prim-5 shadow-rough min-h-182 flex w-full flex-col gap-5 rounded-xl px-10 py-8">

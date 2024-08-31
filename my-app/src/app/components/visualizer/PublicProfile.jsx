@@ -113,7 +113,6 @@ export default function PublicProfile({ images, objects }) {
       });
     }
 
-    console.log(result);
     return result;
   }, [objects]);
 

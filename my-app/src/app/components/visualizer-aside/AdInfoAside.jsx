@@ -28,10 +28,17 @@ export default function AdInfoAside({ changeSection, changeSubSection }) {
         </svg>
       </div>
       <p
-        onClick={() => changeSubSection("Temporary")}
+        onClick={() => changeSubSection("Ad Posts Viewed")}
         className="text-prim-6 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
       >
-        Temporary
+        Ad Posts Viewed
+      </p>
+
+      <p
+        onClick={() => changeSubSection("Advertisers Using Your Info")}
+        className="text-prim-6 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
+      >
+        Advertisers Using Your Info
       </p>
     </section>
   );

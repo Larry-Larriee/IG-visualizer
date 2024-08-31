@@ -27,12 +27,12 @@ export default function IGFeedAside({ changeSection, changeSubSection }) {
           />
         </svg>
       </div>
-      <p
+      {/* <p
         onClick={() => changeSubSection("Temporary")}
         className="text-prim-6 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
       >
         Temporary
-      </p>
+      </p> */}
     </section>
   );
 }
