@@ -4,8 +4,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import Speech from "../Speech";
 import Comment from "../Comment";
 import Image from "next/image";
-
-// import Image from "next/image";
+import Like from "../Like";
+import Interactions from "../Interactions";
 
 export default function Activity({
   images,
@@ -169,17 +169,13 @@ export default function Activity({
           }
         }
 
-        if (mostFrequentCount < mostFrequent) {
-          console.log("most frequent: ", mediaOwners[i]);
-
+        if (mostFrequentCount < frequentCount) {
           mostFrequent = mediaOwners[i];
           mostFrequentCount = frequentCount;
         }
         frequentCount = 0;
       }
     }
-
-    console.log(mostFrequent);
 
     return mostFrequent;
   }, [mediaOwners]);
@@ -222,6 +218,45 @@ export default function Activity({
       return { owner: earliestTimestampOwner, time: formattedDate };
     }
   }, [commentsList]);
+
+  const likesList = useMemo(() => {
+    let result;
+
+    if (objects) {
+      objects.forEach((object) => {
+        if (object["likes_comment_likes"]) {
+          result = object["likes_comment_likes"];
+        }
+      });
+    }
+
+    // reversing array so messages are oldest to newest instead of newest to oldest
+    let reversedResult = [];
+
+    for (let i = result.length - 1; i >= 0; i -= 1) {
+      reversedResult.push(result[i]);
+    }
+
+    return reversedResult;
+  }, [objects]);
+
+  const storyInteractionsList = useMemo(() => {
+    let result;
+
+    if (objects) {
+      objects.forEach((object) => {
+        if (object["story_activities_story_likes"]) {
+          result = object["story_activities_story_likes"];
+        }
+      });
+
+      return result;
+    }
+  }, [objects]);
+
+  useEffect(() => {
+    console.log(storyInteractionsList);
+  }, [storyInteractionsList]);
 
   return (
     <section className="bg-prim-5 shadow-rough min-h-182 flex w-full flex-col gap-5 rounded-xl px-10 py-8">
@@ -340,12 +375,58 @@ export default function Activity({
                     />
                   );
                 })}
+            </div>
+          </div>
+        </>
+      )}
 
-              {/* <Comment
-                comment={"You replied to @kani: That makes me hungry"}
-                date={"September 3rd, 2024"}
-                atHandle={"@kani"}
-              /> */}
+      {subsection === "Likes" && (
+        <>
+          <p className="text-prim-2 font-league text-3xl">Likes</p>
+
+          <div className="flex h-full w-full flex-col gap-8">
+            <div className="flex flex-col gap-5">
+              {likesList &&
+                likesList.map((like, index) => {
+                  if (like["string_list_data"][0]["href"]) {
+                    return (
+                      <Like
+                        key={like + index}
+                        likeLink={like["string_list_data"][0]["href"]}
+                        date={like["string_list_data"][0]["timestamp"]}
+                      />
+                    );
+                  } else {
+                    return (
+                      <Like
+                        key={like + index}
+                        likeLink={"a deleted post"}
+                        date={like["string_list_data"][0]["timestamp"]}
+                      />
+                    );
+                  }
+                })}
+            </div>
+          </div>
+        </>
+      )}
+
+      {subsection === "Story Interactions" && (
+        <>
+          <p className="text-prim-2 font-league text-3xl">Story Interactions</p>
+
+          <div className="flex h-full w-full flex-col gap-8">
+            <div className="flex flex-col gap-5">
+              {storyInteractionsList &&
+                storyInteractionsList.map((interactions, index) => {
+                  return (
+                    <Interactions
+                      key={interactions + index}
+                      interactionsUser={interactions["title"]}
+                      date={interactions["string_list_data"][0]["timestamp"]}
+                    />
+                  );
+                })}
             </div>
           </div>
         </>

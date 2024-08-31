@@ -28,10 +28,17 @@ export default function LogInfAside({ changeSection, changeSubSection }) {
         </svg>
       </div>
       <p
-        onClick={() => changeSubSection("Temporary")}
+        onClick={() => changeSubSection("Logged In")}
         className="text-prim-6 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
       >
-        Temporary
+        Logged In
+      </p>
+
+      <p
+        onClick={() => changeSubSection("Logged Out")}
+        className="text-prim-6 hover:text-prim-9 font-league text-2xl transition duration-200 hover:scale-105 hover:cursor-pointer"
+      >
+        Logged Out
       </p>
     </section>
   );
