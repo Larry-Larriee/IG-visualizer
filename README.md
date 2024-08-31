@@ -17,6 +17,10 @@ Find it here at [IG Visualizer](https://3dhtml.vercel.app/)
 ![image](https://github.com/user-attachments/assets/fb7b84d0-01d1-4a3a-aaf7-5bc3a783b913)
 ![image](https://github.com/user-attachments/assets/692818e2-e062-4cfb-b880-113ee3ec72bc)
 
+# Important
+
+At the moment, file uploads may not be supported on chrome. For the time being, if you decide to use IG Visualizer, please use firefox, where folder uploads do work. Thank you.
+
 # License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
