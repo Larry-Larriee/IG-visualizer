@@ -3,6 +3,9 @@ import React from "react";
 export default function Comment({ comment, date, atHandle }) {
   let commentSplit = comment.split(atHandle);
 
+  // converting date in seconds to milliseconds (ms)
+  let fomattedDate = new Date(date * 1000).toDateString();
+
   return (
     <>
       {commentSplit && (
@@ -13,7 +16,7 @@ export default function Comment({ comment, date, atHandle }) {
             {`${commentSplit[1]}`}
           </p>
 
-          <p className="font-league text-sm text-gray-400">{date}</p>
+          <p className="font-league text-sm text-gray-400">{fomattedDate}</p>
         </article>
       )}
     </>

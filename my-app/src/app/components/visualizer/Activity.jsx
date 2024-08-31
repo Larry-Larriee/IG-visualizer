@@ -92,8 +92,6 @@ export default function Activity({
 
     if (user && directMessages) {
       directMessages.forEach((message) => {
-        console.log(message["title"], user);
-
         if (message["title"] === user) {
           result = message["messages"];
         }
@@ -136,22 +134,93 @@ export default function Activity({
         }
       });
 
-      return result;
+      return result.reverse();
     }
   }, [objects]);
 
-  // const mostComments = useMemo(() => {
-  //   let result = {};
+  // i set aside a variable just for mediaOwners because some arrays do not have the "Media Owner" key
+  const mediaOwners = useMemo(() => {
+    let result = [];
 
-  //   if (commentsList) {
-  //     for (let comment in commentsList) {
-  //       result[comment
-  //     }
-  //   }
-  // }, [commentsList]);
+    if (commentsList) {
+      commentsList.forEach((comment) => {
+        if (comment["Media Owner"]) {
+          let mediaOwner = comment["Media Owner"]["value"];
+          result.push(mediaOwner);
+        } else {
+          result.push("you");
+        }
+      });
 
-  useEffect(() => {
-    console.log(commentsList);
+      return result;
+    }
+  }, [commentsList]);
+
+  const mostComments = useMemo(() => {
+    let mostFrequent;
+    let mostFrequentCount = 0;
+    let frequentCount = 0;
+
+    if (mediaOwners) {
+      for (let i = 0; i < mediaOwners.length; i += 1) {
+        for (let j = 0; j < mediaOwners.length; j += 1) {
+          if (mediaOwners[i] === mediaOwners[j]) {
+            frequentCount += 1;
+          }
+        }
+
+        if (mostFrequentCount < mostFrequent) {
+          console.log("most frequent: ", mediaOwners[i]);
+
+          mostFrequent = mediaOwners[i];
+          mostFrequentCount = frequentCount;
+        }
+        frequentCount = 0;
+      }
+    }
+
+    console.log(mostFrequent);
+
+    return mostFrequent;
+  }, [mediaOwners]);
+
+  const earliestComment = useMemo(() => {
+    let allTimestamps = [];
+    let earliestTimestamp = Infinity;
+    let earliestTimestampOwner;
+
+    if (commentsList) {
+      commentsList.forEach((comment) => {
+        if (comment["Time"]) {
+          if (comment["Media Owner"]) {
+            allTimestamps.push({
+              owner: comment["Media Owner"]["value"],
+              time: comment["Time"]["timestamp"],
+            });
+          } else {
+            allTimestamps.push({
+              owner: "you",
+              time: comment["Time"]["timestamp"],
+            });
+          }
+        }
+      });
+
+      allTimestamps.forEach((timestamp) => {
+        if (timestamp["time"] < earliestTimestamp) {
+          earliestTimestamp = timestamp["time"];
+        }
+      });
+
+      allTimestamps.forEach((timestamp) => {
+        if (timestamp["time"] === earliestTimestamp) {
+          earliestTimestampOwner = timestamp["owner"];
+        }
+      });
+
+      let formattedDate = new Date(earliestTimestamp * 1000).toDateString();
+      return { owner: earliestTimestampOwner, time: formattedDate };
+    }
   }, [commentsList]);
 
   return (
@@ -247,23 +316,27 @@ export default function Activity({
               </p>
               <p className="text-prim-2 font-league text-lg transition duration-200 ease-in-out hover:scale-105">
                 You&apos;ve sent the most comments to{" "}
-                <span className="text-prim-9">@kani</span>
+                <span className="text-prim-9">@{mostComments}</span>
               </p>
               <p className="text-prim-2 font-league text-lg transition duration-200 ease-in-out hover:scale-105">
-                Your first comment ever was made in September 3rd, 2021 to{" "}
-                <span className="text-prim-9">@kani</span>
+                Your first comment ever was made in{" "}
+                {earliestComment && earliestComment["time"]} to{" "}
+                <span className="text-prim-9">
+                  @{earliestComment && earliestComment["owner"]}
+                </span>
               </p>
             </section>
 
             <div className="flex flex-col gap-5">
               {commentsList &&
+                mediaOwners &&
                 commentsList.map((comment, index) => {
                   return (
                     <Comment
                       key={comment + index}
-                      comment={`You replied to Larry ${comment["Comment"]["value"]}`}
+                      comment={`You replied to @${mediaOwners[index]} ${comment["Comment"]["value"]}`}
                       date={comment["Time"]["timestamp"]}
-                      atHandle={`Larry`}
+                      atHandle={`@${mediaOwners[index]}`}
                     />
                   );
                 })}
